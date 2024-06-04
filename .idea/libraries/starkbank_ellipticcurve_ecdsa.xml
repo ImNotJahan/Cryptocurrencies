@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="starkbank.ellipticcurve.ecdsa" type="repository">
+    <properties maven-id="com.starkbank.ellipticcurve:starkbank-ecdsa:1.0.2" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/starkbank/ellipticcurve/starkbank-ecdsa/1.0.2/starkbank-ecdsa-1.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/starkbank/ellipticcurve/starkbank-ecdsa/1.0.2/starkbank-ecdsa-1.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
