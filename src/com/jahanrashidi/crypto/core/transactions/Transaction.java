@@ -106,7 +106,7 @@ public class Transaction {
             if(output == null) continue;
 
             // output address > amount .
-            result.append(Util.bytesToString(output.address().toDer().getBytes()))
+            result.append(Util.publicKeyToString(output.address()))
                             .append('>');
             result.append(output.amount()).append('.');
         }

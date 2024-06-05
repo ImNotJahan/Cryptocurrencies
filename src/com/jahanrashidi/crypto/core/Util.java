@@ -4,9 +4,12 @@ import com.jahanrashidi.crypto.core.transactions.Transaction;
 import com.jahanrashidi.crypto.core.transactions.UnspentTxOut;
 import com.starkbank.ellipticcurve.Curve;
 import com.starkbank.ellipticcurve.Point;
+import com.starkbank.ellipticcurve.PrivateKey;
 import com.starkbank.ellipticcurve.PublicKey;
+import com.starkbank.ellipticcurve.utils.BinaryAscii;
 import com.starkbank.ellipticcurve.utils.ByteString;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -111,7 +114,19 @@ public class Util {
     }
 
     public static PublicKey stringToPublicKey(String key){
-        return PublicKey.fromDer(new ByteString(stringHashToByte(key)));
+        return PublicKey.fromString(new ByteString(BinaryAscii.binaryFromHex(key)));
+    }
+
+    public static String publicKeyToString(PublicKey key){
+        return BinaryAscii.hexFromBinary(key.toByteString());
+    }
+
+    public static String privateKeyToString(PrivateKey key){
+        return BinaryAscii.hexFromBinary(key.toByteString());
+    }
+
+    public static PrivateKey stringToPrivateKey(String key){
+        return PrivateKey.fromString(new ByteString(BinaryAscii.binaryFromHex(key)));
     }
 
     // various methods for testing the equality of ECDSA objects

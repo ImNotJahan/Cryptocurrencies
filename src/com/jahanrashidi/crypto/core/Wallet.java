@@ -4,11 +4,9 @@ import com.jahanrashidi.crypto.core.transactions.Transaction;
 import com.jahanrashidi.crypto.core.transactions.TxIn;
 import com.jahanrashidi.crypto.core.transactions.TxOut;
 import com.jahanrashidi.crypto.core.transactions.UnspentTxOut;
-import com.starkbank.ellipticcurve.Curve;
 import com.starkbank.ellipticcurve.PrivateKey;
 import com.starkbank.ellipticcurve.PublicKey;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Wallet {
@@ -22,8 +20,8 @@ public class Wallet {
     }
 
     // for loading an existing wallet
-    public Wallet(Curve curve, BigInteger secret){
-        privateKey = new PrivateKey(curve, secret);
+    public Wallet(PrivateKey privateKey){
+        this.privateKey = privateKey;
         publicKey = privateKey.publicKey();
     }
 
@@ -109,10 +107,10 @@ public class Wallet {
     public String toString(){
         String encoding = "";
         encoding += "Private key: ";
-        encoding += Util.bytesToString(privateKey.toDer().getBytes());
+        encoding += Util.privateKeyToString(privateKey);
         encoding += "\n";
         encoding += "Public key: ";
-        encoding += Util.bytesToString(publicKey().toDer().getBytes());
+        encoding += Util.publicKeyToString(publicKey);
 
         return encoding;
     }
