@@ -18,6 +18,7 @@ public class Main {
     public static Wallet wallet;
 
     public static void main(String[] args) {
+
         int httpPort = args.length > 0 ? Integer.parseInt(args[0]) : 8001;
         int serverPort = args.length > 1 ? Integer.parseInt(args[1]) : 8002;
 

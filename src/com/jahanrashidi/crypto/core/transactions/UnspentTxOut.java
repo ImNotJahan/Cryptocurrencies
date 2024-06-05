@@ -56,4 +56,8 @@ public class UnspentTxOut {
 
         return resultingUTxO;
     }
+
+    public String toString(){
+        return Util.bytesToString(address.toDer().getBytes());
+    }
 }

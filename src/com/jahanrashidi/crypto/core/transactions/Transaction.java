@@ -2,7 +2,9 @@ package com.jahanrashidi.crypto.core.transactions;
 
 import com.jahanrashidi.crypto.core.Util;
 import com.starkbank.ellipticcurve.PublicKey;
+import com.starkbank.ellipticcurve.Signature;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -19,6 +21,12 @@ public class Transaction {
         this.inputs = inputs;
 
         id = calculateId();
+    }
+
+    public Transaction(TxOut[] outputs, TxIn[] inputs, byte[] id){
+        this.outputs = outputs;
+        this.inputs = inputs;
+        this.id = id;
     }
 
     public byte[] id(){
@@ -82,42 +90,64 @@ public class Transaction {
         StringBuilder result = new StringBuilder();
 
         for(TxIn input : inputs){
+            // tx output id > tx output index > signature r value > signature s value .
+            result.append(Util.bytesToString(input.txOutId())).append(">");
             result.append(input.txOutIndex()).append(">");
-            result.append(Util.bytesToString(input.txOutId())).append(".");
+
+            if(input.signature() != null) {
+                result.append(input.signature().r).append(">");
+                result.append(input.signature().s).append(".");
+            }
         }
 
         result.append('_');
 
         for(TxOut output : outputs){
+            if(output == null) continue;
+
+            // output address > amount .
             result.append(Util.bytesToString(output.address().toDer().getBytes()))
                             .append('>');
             result.append(output.amount()).append('.');
         }
 
+        result.append('_').append(Util.bytesToString(id));
+
         return result.toString();
     }
 
+    // I really need to switch over to json
+    public static Transaction decode(String encoded){
+        String[] parts = encoded.split("_");
+
+        String[] encodedInputs = parts[0].split("\\.");
+        String[] encodedOutputs = parts[1].split("\\.");
+
+        TxIn[] inputs = new TxIn[encodedInputs.length];
+        for(int i = 0; i < inputs.length; i++){
+            String[] inputParts = encodedInputs[i].split(">");
+            TxIn input;
+
+            if(inputParts.length == 4)
+                input = new TxIn(Util.stringHashToByte(inputParts[0]), Integer.parseInt(inputParts[1]),
+                        new Signature(new BigInteger(inputParts[2]), new BigInteger(inputParts[3])));
+            else
+                input = new TxIn(Util.stringHashToByte(inputParts[0]), Integer.parseInt(inputParts[1]));
+            inputs[i] = input;
+        }
+
+        TxOut[] outputs = new TxOut[encodedOutputs.length];
+        for(int i = 0; i < outputs.length; i++){
+            String[] outputParts = encodedOutputs[i].split(">");
+            TxOut output = new TxOut(Util.stringToPublicKey(outputParts[0]), Integer.parseInt(outputParts[1]));
+
+            outputs[i] = output;
+        }
+
+        return new Transaction(outputs, inputs, Util.stringHashToByte(parts[2]));
+    }
+
     public String toString(){
-        StringBuilder result = new StringBuilder();
-
-        for(TxIn input : inputs){
-            result.append(input.txOutIndex());
-            result.append('\n');
-            result.append(Util.bytesToString(input.txOutId()));
-        }
-
-        result.append('\n');
-        result.append('\n');
-
-        for(TxOut output : outputs){
-            result.append(Util.bytesToString(output.address().toDer().getBytes()));
-            result.append('\n');
-            result.append(output.amount());
-        }
-
-        result.append('\n');
-
         return encode();
-        //return Util.bytesToString(id);
     }
 }

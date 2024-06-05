@@ -28,6 +28,12 @@ public class TxIn {
         this.txOutIndex = txOutIndex;
     }
 
+    public TxIn(byte[] txOutId, int txOutIndex, Signature signature){
+        this.txOutId = txOutId;
+        this.txOutIndex = txOutIndex;
+        this.signature = signature;
+    }
+
     public TxIn(int txOutIndex){
         this.txOutIndex = txOutIndex;
     }
@@ -45,6 +51,10 @@ public class TxIn {
 
         if(referencedUTxO == null) return 0;
         return referencedUTxO.amount();
+    }
+
+    public Signature signature(){
+        return signature;
     }
 
     public boolean isValid(Transaction transaction, UnspentTxOut[] unspentTxOuts){

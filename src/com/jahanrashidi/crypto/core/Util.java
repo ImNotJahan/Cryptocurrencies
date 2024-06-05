@@ -77,12 +77,21 @@ public class Util {
 
         for (String s : blocks) {
             String[] block = s.split(",");
+            Transaction[] data = new Transaction[0];
+
+            if(!block[2].isEmpty()) {
+                String[] encodedTransactions = block[2].split(":");
+                data = new Transaction[encodedTransactions.length];
+
+                for (int i = 0; i < data.length; i++)
+                    data[i] = Transaction.decode(encodedTransactions[i]);
+            }
 
             tempChain.add(
                     new Block(
                             Integer.parseInt(block[0]),
                             Long.parseLong(block[1]),
-                            new Transaction[0],//block[2], need to fix peers :(
+                            data,
                             stringHashToByte(block[3]),
                             stringHashToByte(block[4]),
                             Integer.parseInt(block[5]),

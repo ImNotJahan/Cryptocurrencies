@@ -81,6 +81,12 @@ public class Blockchain {
         // chain with greater CD is chosen
         if(proposedChainCD > currentChainCD) {
             this.chain = chain.getChain();
+
+            unspentTxOuts = new ArrayList<UnspentTxOut>();
+
+            for(Block block : chain.chain){
+                unspentTxOuts = UnspentTxOut.updateUTxOs(block.data(), unspentTxOuts.toArray(new UnspentTxOut[0]));
+            }
             return true;
         }
 

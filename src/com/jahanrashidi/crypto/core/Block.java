@@ -138,6 +138,10 @@ public class Block {
         return encoding;
     }
 
+    public Transaction[] data(){
+        return data;
+    }
+
     /**
      * Encodes block for sending to peers
      */
