@@ -11,7 +11,7 @@ public class BalanceHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         OutputStream stream = exchange.getResponseBody();
-        String response = "$" + Main.wallet.balance(Main.chain.unspentTxOuts());
+        String response = "J" + Main.wallet.balance(Main.chain.unspentTxOuts());
 
         exchange.sendResponseHeaders(200, response.length());
 
