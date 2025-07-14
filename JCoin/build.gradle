@@ -34,6 +34,16 @@ java {
     }
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.jahanrashidi.crypto.Main'
+    }
+
+    dependencies {
+        implementation 'com.starkbank:sdk:2.21.0'
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'com.jahanrashidi.crypto.Main'
